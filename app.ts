@@ -4,15 +4,21 @@ dotenv.config();
 import connectDB from './src/config/db';
 import passport from 'passport';
 import authentication from "./src/routes/Authentication";
-import cookieSession from 'cookie-session';
-
+import session from 'express-session';
 connectDB();
 
 const app = express();
 
 // middleware
 app.use(express.json());
-app.use(cookieSession({ maxAge: 30 * 24 * 60 * 60 * 1000, keys: ["key"] }))
+app.use(
+    session({
+      secret: 'key',
+      resave: false,
+      saveUninitialized: false,
+      cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 },
+    })
+  );
 app.use(passport.initialize());
 app.use(passport.session());
 
