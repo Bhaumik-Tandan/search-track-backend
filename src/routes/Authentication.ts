@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 router.get('/google/callback', passport.authenticate('google', {
-  successRedirect: 'http://localhost:3000/dashboard',
+  successRedirect: 'http://localhost:3000',
 }));
 
 router.get('/google/callback', passport.authenticate('google', {
