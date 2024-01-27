@@ -12,6 +12,16 @@ if (!process.env.GOOGLE_CLIENT_SECRET) {
     process.exit(1); // Exit the process with an error code
 }
 
+passport.serializeUser((user:any, done) => {
+    done(null, user?._id)
+})
+
+passport.deserializeUser((id, done) => {
+    User.findById(id).then(user => {
+        done(null, user)
+    })
+})
+
 
 passport.use(
     new GoogleStrategy(
