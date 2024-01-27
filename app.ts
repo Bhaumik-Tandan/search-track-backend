@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(cors({
   origin: (origin, callback) => {
     // Check if the origin is allowed
-    const allowedOrigins = ['http://localhost:3000', 'http://example.com'];
+    const allowedOrigins = ['http://localhost:3000', 'chrome-extension://ipdjbgblacikhnfcpgifbbopbpnbhnpn'];
     
     // Check if origin is defined before using it
     const isAllowed = origin ? allowedOrigins.includes(origin) : true;
