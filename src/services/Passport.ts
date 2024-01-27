@@ -1,6 +1,6 @@
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-// Check if googleClientID is present in the environment variables
+import User from '../models/User';
 if (!process.env.GOOGLE_CLIENT_ID) {
     console.error('Error: googleClientID is absent in the environment variables');
     process.exit(1); // Exit the process with an error code
@@ -26,7 +26,29 @@ passport.use(
             profile: any,
             done: any
         ) => {
-            // Your strategy implementation here
+            const existingUser = await User.findOneAndUpdate({ googleId: profile.id }, {
+                accessToken,
+                refreshToken,
+                name: profile.displayName,
+                avatarUrl: profile.picture,
+                isVerified: profile.emails[0].verified,
+            })
+        
+            if (existingUser) {
+                return done(null, existingUser)
+            }
+        
+            const user = await new User({
+                accessToken,
+                refreshToken,
+                name: profile.displayName,
+                email: profile.emails[0].value,
+                googleId: profile.id,
+                avatarUrl: profile.picture,
+                isVerified: profile.emails[0].verified,
+            }).save()
+        
+            done(null, user)
         }
     )
 );
