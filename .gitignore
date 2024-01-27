@@ -1,0 +1,27 @@
+# Node.js
+node_modules/
+
+# TypeScript
+*.js
+*.js.map
+*.d.ts
+
+# VSCode
+.vscode/
+
+# macOS
+.DS_Store
+
+# npm
+npm-debug.log
+
+# Yarn
+yarn-error.log
+yarn.lock
+
+# Editor directories and files
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
