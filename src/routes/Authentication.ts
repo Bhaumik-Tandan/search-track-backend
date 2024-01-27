@@ -1,9 +1,6 @@
 import express, { Request, Response } from 'express';
 import passport from 'passport';
 import "../services/Passport";
-interface UserRequest extends Request {
-  user: any; // Adjust the type accordingly
-}
 
 const router = express.Router();
 
