@@ -7,7 +7,7 @@ const sessionOptions = {
   secret: process.env.SESSION_SECRET || '',
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 },
+  cookie: { maxAge: 30 * 24 * 60 * 60 * 1000,secure:true },
 };
 
 export default session(sessionOptions);
