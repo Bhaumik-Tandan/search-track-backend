@@ -24,6 +24,15 @@ router.get('/me', verifyToken, (req, res) => {
   res.send(req.user);
 });
 
+router.get('/logout', (req, res) => {
+  req.logout((err) => {
+    if (err) {
+      return res.status(500).json({ error: 'Failed to logout' });
+    }
+    res.redirect(process.env.FRONTEND_URI||"");
+  });
+});
+
 
 
 
