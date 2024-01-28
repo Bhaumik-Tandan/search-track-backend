@@ -7,7 +7,6 @@ import connectDB from './config/db';
 import passport from 'passport';
 import authentication from "./routes/Authentication";
 import corsMiddleware from './services/cors';
-import sessionMiddleware from './services/session';
 import searchRoute from "./routes/Search";
 
 
@@ -18,7 +17,6 @@ const app = express();
 // middleware
 app.use(express.json());
 app.use(corsMiddleware);
-app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
 
