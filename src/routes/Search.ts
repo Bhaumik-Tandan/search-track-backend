@@ -2,7 +2,7 @@
 import express, { Request, Response } from 'express';
 import passport from 'passport';
 import Search, { ISearch } from '../models/Search'; // Adjust the path based on your project structure
-import {User} from "../models/User";
+import { User } from '../models/User';
 
 const router = express.Router();
 
@@ -15,7 +15,6 @@ router.post('', async (req: Request, res: Response) => {
 
     // Retrieve user ID from the authenticated user
     const userId = (req.user as User)?._id?.toString();
-
 
     // Assume 'url' is provided in the request body
     const { url } = req.body;
@@ -33,7 +32,7 @@ router.post('', async (req: Request, res: Response) => {
   }
 });
 
-// GET request to retrieve all searches for the authenticated user
+// GET request to retrieve searches with pagination
 router.get('', async (req: Request, res: Response) => {
   try {
     if (!req.user) {
@@ -43,8 +42,17 @@ router.get('', async (req: Request, res: Response) => {
     // Retrieve user ID from the authenticated user
     const userId = (req.user as User)?._id?.toString();
 
-    // Find all searches for the specified user
-    const searches = await Search.find({ userId });
+    // Extract page and limit from query parameters, default to page 1 and limit 10
+    const page = parseInt(req.query.page as string, 10) || 1;
+    const limit = parseInt(req.query.limit as string, 10) || 10;
+
+    // Calculate the skip value based on the page and limit
+    const skip = (page - 1) * limit;
+
+    // Find searches for the specified user with pagination
+    const searches = await Search.find({ userId })
+      .skip(skip)
+      .limit(limit);
 
     res.status(200).json(searches);
   } catch (error) {
