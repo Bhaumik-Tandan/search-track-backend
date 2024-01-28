@@ -10,7 +10,6 @@ router.get('/google/callback', passport.authenticate('google', {
 }));
 
 router.get('/me', (req, res) => {
-  console.log(req);
   res.send(req.user);
 });
 
