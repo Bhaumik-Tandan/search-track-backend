@@ -9,9 +9,6 @@ router.get('/google/callback', passport.authenticate('google', {
   successRedirect: process.env.FRONTEND_URI,
 }));
 
-router.get('/google/callback', passport.authenticate('google', {
-  successRedirect: process.env.FRONTEND_URI,
-}));
 router.get('/me', (req, res) => {
   res.send(req.user);
 });
