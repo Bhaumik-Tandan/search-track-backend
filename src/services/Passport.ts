@@ -28,7 +28,7 @@ passport.use(
         {
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL: `https://search-track.cyclic.app/api/v1/auth/google/callback`,
+            callbackURL: process.env.BACKEND_URI,
         },
         async (
             accessToken: string,
