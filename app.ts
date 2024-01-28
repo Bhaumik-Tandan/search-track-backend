@@ -6,6 +6,7 @@ import passport from 'passport';
 import authentication from "./src/routes/Authentication";
 import session from 'express-session';
 import cors from "cors";
+import searchRoute from "./src/routes/search";
 connectDB();
 
 const app = express();
@@ -15,7 +16,7 @@ app.use(express.json());
 app.use(cors({
   origin: (origin, callback) => {
     // Check if the origin is allowed
-    const allowedOrigins = ['http://localhost:3000', 'chrome-extension://ipdjbgblacikhnfcpgifbbopbpnbhnpn'];
+    const allowedOrigins = ['http://localhost:3000'];
     
     // Check if origin is defined before using it
     const isAllowed = origin ? allowedOrigins.includes(origin) : true;
@@ -42,5 +43,6 @@ app.use(passport.session());
 
 
 app.use('/api/v1/auth', authentication);
+app.use('/api/v1/search', searchRoute);
 
 app.listen('4500', () => console.log('Server is connected'));
