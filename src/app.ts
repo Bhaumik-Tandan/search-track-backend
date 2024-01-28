@@ -3,12 +3,12 @@ import express from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
 
-import connectDB from './src/config/db';
+import connectDB from './config/db';
 import passport from 'passport';
-import authentication from "./src/routes/Authentication";
-import corsMiddleware from './src/services/cors';
-import sessionMiddleware from './src/services/session';
-import searchRoute from "./src/routes/search";
+import authentication from "./routes/Authentication";
+import corsMiddleware from './services/cors';
+import sessionMiddleware from './services/session';
+import searchRoute from "./routes/search";
 
 
 connectDB();
