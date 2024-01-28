@@ -8,7 +8,7 @@ import verifyToken from '../services/verifyToken';
 const router = express.Router();
 
 // POST request to save a new search
-router.post('', async (req: Request, res: Response) => {
+router.post('', verifyToken,async (req: Request, res: Response) => {
   try {
     if (!req.user) {
       return res.status(401).json({ error: 'Unauthorized' });
