@@ -1,48 +1,32 @@
 import express from 'express';
+
 import dotenv from 'dotenv';
 dotenv.config();
+
 import connectDB from './src/config/db';
 import passport from 'passport';
 import authentication from "./src/routes/Authentication";
-import session from 'express-session';
-import cors from "cors";
+import corsMiddleware from './src/services/cors';
+import sessionMiddleware from './src/services/session';
 import searchRoute from "./src/routes/search";
+
+
 connectDB();
 
 const app = express();
 
 // middleware
 app.use(express.json());
-app.use(cors({
-  origin: (origin, callback) => {
-    // Check if the origin is allowed
-    const allowedOrigins = ['http://localhost:3000'];
-    
-    // Check if origin is defined before using it
-    const isAllowed = origin ? allowedOrigins.includes(origin) : true;
-
-    // Set the Access-Control-Allow-Origin header dynamically based on the request's origin
-    callback(null, isAllowed ? origin : false);
-  },
-  credentials: true,
-}));
-
-
-
-
-app.use(
-    session({
-      secret: 'key',
-      resave: false,
-      saveUninitialized: false,
-      cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 },
-    })
-  );
+app.use(corsMiddleware);
+app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
 
+const API_PREFIX = '/api/v1';
 
-app.use('/api/v1/auth', authentication);
-app.use('/api/v1/search', searchRoute);
+app.use(`${API_PREFIX}/auth`, authentication);
+app.use(`${API_PREFIX}/search`, searchRoute);
 
-app.listen('4500', () => console.log('Server is connected'));
+app.listen(process.env.PORT, () => {
+  console.log(`Server is connected on port ${process.env.PORT}`);
+});
