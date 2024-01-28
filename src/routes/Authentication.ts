@@ -15,7 +15,7 @@ router.get('/google/callback', passport.authenticate('google', {
 }), (req ,res) => {
   const jwtSecret: Secret = process.env.JWT_SECRET || 'defaultSecret'; 
   const token = jwt.sign({ user: req.user }, jwtSecret, { expiresIn: '1d' });
-  res.redirect(`${process.env.FRONTEND_URI}?token=${token}`);
+  res.redirect( encodeURIComponent(`${process.env.FRONTEND_URI}?token=${token}`));
 });
 
 
