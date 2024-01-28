@@ -8,13 +8,16 @@ import passport from 'passport';
 import authentication from "./routes/Authentication";
 import corsMiddleware from './services/cors';
 import searchRoute from "./routes/Search";
+import session from './services/session';
 
 
 connectDB();
 
 const app = express();
 
+
 // middleware
+app.use(session);
 app.use(express.json());
 app.use(corsMiddleware);
 app.use(passport.initialize());
