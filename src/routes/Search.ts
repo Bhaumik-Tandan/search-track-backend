@@ -3,6 +3,7 @@ import express, { Request, Response } from 'express';
 import passport from 'passport';
 import Search, { ISearch } from '../models/Search'; // Adjust the path based on your project structure
 import { User } from '../models/User';
+import verifyToken from '../services/verifyToken';
 
 const router = express.Router();
 
@@ -33,7 +34,7 @@ router.post('', async (req: Request, res: Response) => {
 });
 
 // GET request to retrieve searches with pagination
-router.get('', async (req: Request, res: Response) => {
+router.get('',verifyToken,async (req: Request, res: Response) => {
   try {
     if (!req.user) {
       return res.status(401).json({ error: 'Unauthorized' });
