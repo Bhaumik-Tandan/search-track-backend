@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import passport from 'passport';
 import '../services/Passport';
 import jwt, { Secret } from 'jsonwebtoken';
-
+import verifyToken from '../services/verifyToken';
 const router = express.Router();
 
 
@@ -20,9 +20,9 @@ router.get('/google/callback', passport.authenticate('google', {
 
 
 
-router.get('/me', (req, res) => {
-  res.send(req.user)
-})
+router.get('/me', verifyToken, (req, res) => {
+  res.send(req.user);
+});
 
 
 
