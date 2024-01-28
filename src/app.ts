@@ -8,7 +8,7 @@ import passport from 'passport';
 import authentication from "./routes/Authentication";
 import corsMiddleware from './services/cors';
 import sessionMiddleware from './services/session';
-import searchRoute from "./routes/search";
+import searchRoute from "./routes/Search";
 
 
 connectDB();
