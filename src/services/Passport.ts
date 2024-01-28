@@ -8,6 +8,17 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET || !proce
     process.exit(1); // Exit the process with an error code
 }
 
+passport.serializeUser((user, done) => {
+    done(null, user)
+})
+
+passport.deserializeUser((id, done) => {
+    User.findById(id).then(user => {
+        done(null, user)
+    })
+})
+
+
 passport.use(
     new GoogleStrategy(
         {
@@ -50,7 +61,6 @@ passport.use(
                 // Generate JWT token
                 const jwtSecret: Secret = process.env.JWT_SECRET || 'defaultSecret'; // Provide a default value if undefined
                 const token = jwt.sign({ userId: user._id }, jwtSecret, { expiresIn: '1d' });
-
                 done(null, { user, token });
             } catch (error) {
                 done(error, null);
