@@ -8,7 +8,8 @@ export interface ISearch extends Document {
 const searchSchema = new Schema({
   url: { type: String, required: true },
   userId: { type: String, required: true },
-});
+  searchKeywords:{ type: [String] }
+},{ timestamps: true });
 
 const Search: Model<ISearch> = mongoose.model<ISearch>('Search', searchSchema);
 

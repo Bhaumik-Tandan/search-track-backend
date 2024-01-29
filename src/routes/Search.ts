@@ -33,18 +33,48 @@ router.post('', async (req: Request, res: Response) => {
   }
 });
 
-// GET request to retrieve all searches for the authenticated user
 router.get('', async (req: Request, res: Response) => {
   try {
-    if (!req.user) {
-      return res.status(401).json({ error: 'Unauthorized' });
+    // Check for authentication
+    // if (!req.user) {
+    //   return res.status(401).json({ error: 'Authentication required' });
+    // }
+
+    // // Retrieve user ID from the authenticated user
+    // const userId = (req.user as User)?._id?.toString();
+
+    // Set default values for page, limit, and sort
+    const page = parseInt(req.query.page as string, 10) || 1;
+    const limit = parseInt(req.query.limit as string, 10) || 10;
+
+    // Calculate the skip value based on the page and limit
+    const skip = (page - 1) * limit;
+
+    // Set default sort order to no sorting
+    let sort: string | { [key: string]: 'asc' | 'desc' } = {};
+
+    // Check for the presence of the sort parameter and set the appropriate sorting
+    if (req.query.sort === 'created_at') {
+      sort = { createdAt: 'asc' };
     }
 
-    // Retrieve user ID from the authenticated user
-    const userId = (req.user as User)?._id?.toString();
+    // Sanitize and get search query parameter
+    const searchQuery = typeof req.query.query === 'string' ? sanitizeInput(req.query.query) : '';
 
-    // Find all searches for the specified user
-    const searches = await Search.find({ userId });
+    // Build the search criteria with pagination, search query, and sorting
+    const searchCriteria: any = {
+      // userId,
+      $or: [
+        { searchKeywords: { $in: [searchQuery] } },
+        { url: { $regex: searchQuery, $options: 'i' } }, // Case-insensitive URL search
+      ],
+    };
+
+    // Find searches for the specified user with pagination, search query, and sorting
+    const searches = await Search.find(searchCriteria)
+      .sort(sort)
+      .skip(skip)
+      .limit(limit);
 
     res.status(200).json(searches);
   } catch (error) {
@@ -52,5 +82,15 @@ router.get('', async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+
+
+// Add any additional sanitization functions if needed
+function sanitizeInput(input: string): string {
+  // Implement your sanitization logic here
+  return input.trim();
+}
+
+
 
 export default router;
