@@ -3,11 +3,7 @@
     "builds": [
       {
         "src": "src/app.ts",
-        "use": "@now/node-builder",
-        "config": {
-          "src": "src/**/*.ts",
-          "tsconfig": "tsconfig.json"
-        }
+        "use": "@now/node"
       }
     ],
     "routes": [
