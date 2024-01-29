@@ -2,9 +2,9 @@
   "name": "search-track-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "ts-node app.ts",
+    "start": "tsc && node dist/app.js",
     "build": "tsc"
   },
   "keywords": [],
