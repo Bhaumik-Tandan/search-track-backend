@@ -36,12 +36,12 @@ router.post('', async (req: Request, res: Response) => {
 router.get('', async (req: Request, res: Response) => {
   try {
     // Check for authentication
-    // if (!req.user) {
-    //   return res.status(401).json({ error: 'Authentication required' });
-    // }
+    if (!req.user) {
+      return res.status(401).json({ error: 'Authentication required' });
+    }
 
-    // // Retrieve user ID from the authenticated user
-    // const userId = (req.user as User)?._id?.toString();
+    // Retrieve user ID from the authenticated user
+    const userId = (req.user as User)?._id?.toString();
 
     // Set default values for page, limit, and sort
     const page = parseInt(req.query.page as string, 10) || 1;
@@ -63,7 +63,7 @@ router.get('', async (req: Request, res: Response) => {
 
     // Build the search criteria with pagination, search query, and sorting
     const searchCriteria: any = {
-      // userId,
+      userId,
       $or: [
         { searchKeywords: { $in: [searchQuery] } },
         { url: { $regex: searchQuery, $options: 'i' } }, // Case-insensitive URL search
