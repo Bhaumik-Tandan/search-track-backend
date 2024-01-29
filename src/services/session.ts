@@ -15,7 +15,7 @@ const sessionOptions = {
   resave: false,
   saveUninitialized: false,
   cookie: {
-    name: 'customSessionCookieName', // Set a custom name for the session cookie
+    name: process.env.COOKIE_NAME||'customSessionCookieName', // Set a custom name for the session cookie
     maxAge: 30 * 24 * 60 * 60 * 1000,
   },
   keys: [cookieKey], // keys property for signing the session cookie
