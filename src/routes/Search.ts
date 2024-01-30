@@ -64,7 +64,7 @@ router.get('', async (req: Request, res: Response) => {
 
     // Find searches for the specified user with pagination, search query, and sorting
     const searches = await Search.find(searchCriteria)
-      .sort({ createdAt: 'asc' })
+      .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);
 
