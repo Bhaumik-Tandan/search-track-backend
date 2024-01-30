@@ -2,7 +2,7 @@
 import express, { Request, Response } from 'express';
 import Search, { ISearch } from '../models/Search'; // Adjust the path based on your project structure
 import {User} from "../models/User";
-
+import getKeywordsFromUrl from '../services/getKeywordsFromUrl';
 const router = express.Router();
 
 // POST request to save a new search
@@ -18,9 +18,10 @@ router.post('', async (req: Request, res: Response) => {
 
     // Assume 'url' is provided in the request body
     const { url } = req.body;
+    const searchKeywords=await getKeywordsFromUrl(url);
 
     // Create a new search document
-    const newSearch: ISearch = new Search({ url, userId });
+    const newSearch: ISearch = new Search({ url, userId,searchKeywords });
 
     // Save the search document to the database
     await newSearch.save();
