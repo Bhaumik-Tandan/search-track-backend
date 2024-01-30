@@ -1,6 +1,5 @@
 // search.ts
 import express, { Request, Response } from 'express';
-import passport from 'passport';
 import Search, { ISearch } from '../models/Search'; // Adjust the path based on your project structure
 import {User} from "../models/User";
 
@@ -50,13 +49,6 @@ router.get('', async (req: Request, res: Response) => {
     // Calculate the skip value based on the page and limit
     const skip = (page - 1) * limit;
 
-    // Set default sort order to no sorting
-    let sort: string | { [key: string]: 'asc' | 'desc' } = {};
-
-    // Check for the presence of the sort parameter and set the appropriate sorting
-    if (req.query.sort === 'created_at') {
-      sort = { createdAt: 'asc' };
-    }
 
     // Sanitize and get search query parameter
     const searchQuery = typeof req.query.query === 'string' ? sanitizeInput(req.query.query) : '';
@@ -72,7 +64,7 @@ router.get('', async (req: Request, res: Response) => {
 
     // Find searches for the specified user with pagination, search query, and sorting
     const searches = await Search.find(searchCriteria)
-      .sort(sort)
+      .sort({ createdAt: 'asc' })
       .skip(skip)
       .limit(limit);
 
